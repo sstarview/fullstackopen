@@ -9,7 +9,6 @@ const Text = ({ text }) => {
 };
 
 const Statistics = ({ good, neutral, bad, all, average, percentage }) => {
-  // console.log("averga", props.average);
   if (!good && !neutral && !bad) {
     return <p>No feedback given</p>;
   }
