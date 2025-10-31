@@ -4,11 +4,14 @@ import SearchFilter from "./components/SearchFilter";
 import Form from "./components/Form";
 import List from "./components/List";
 import personService from "./services/persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newPerson, setNewPerson] = useState({ name: "", number: "" });
   const [filterValue, setFilterValue] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -55,6 +58,26 @@ const App = () => {
               )
             );
             setNewPerson({ name: "", number: "" });
+            setMessage(`Added ${existingPerson.name}`);
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000);
+          })
+          .catch((error) => {
+            setMessage(
+              `Information of ${existingPerson.name} has already removed from server`
+            );
+            setIsError(true);
+
+            setTimeout(() => {
+              setMessage(null);
+              setIsError(false);
+            }, 5000);
+
+            setPersons(
+              persons.filter((person) => person.id !== existingPerson.id)
+            );
+            console.error("Error creating...", error.message);
           });
       }
       return;
@@ -67,6 +90,10 @@ const App = () => {
     personService.create(personObject).then((returnedPerson) => {
       setPersons(persons.concat(returnedPerson));
       setNewPerson({ name: "", number: "" });
+      setMessage(`Added ${returnedPerson.name}`);
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
     });
   };
 
@@ -87,6 +114,7 @@ const App = () => {
   return (
     <div>
       <Heading text={"Phonebook"} />
+      <Notification message={message} isError={isError} />
       <SearchFilter onChange={handleFilterChange} value={filterValue} />
       <Heading text={"add a new"} />
       <Form
