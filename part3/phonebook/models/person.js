@@ -14,8 +14,21 @@ mongoose
   });
 
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: Number,
+  name: { type: String, minLength: 3, required: true },
+  number: {
+    type: String,
+    minLength: 8,
+    validate: {
+      validator: (v) => {
+        return /^\d{2,3}-\d+$/.test(v);
+      },
+      message: (
+        props
+      ) => `${props.value} is not a valid phone number! It must be formatted as 2 or 3 numbers, a hyphen, followed by 4 or more numbers (min total length 8). 
+    E.g., 09-1234567 or 040-22334455.`,
+    },
+    required: true,
+  },
 });
 
 personSchema.set("toJSON", {
