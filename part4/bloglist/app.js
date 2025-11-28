@@ -13,6 +13,7 @@ mongoose.connect(config.MONGODB_URI, { family: 4 }).then(() => {
 });
 
 app.use(express.json());
+app.use(middleware.tokenExactor);
 app.use("/api/blogs", blogRouter);
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
