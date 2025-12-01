@@ -20,12 +20,12 @@ const initialTestUser = [
   {
     username: "AlanWalker",
     name: "Alan Walker",
-    passwordHash: "123456",
+    password: "123456",
   },
   {
     username: "JaunEliah",
     name: "Jaun Eliah",
-    passwordHash: "987654321",
+    password: "987654321",
   },
 ];
 
